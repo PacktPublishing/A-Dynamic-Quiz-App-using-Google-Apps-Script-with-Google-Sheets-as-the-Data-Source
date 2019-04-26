@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title> Create Quiz </title>
+    <style>
+        .quizQuestions {
+            width: 500px;
+            font-size: 1.5em;
+            text-transform: capitalize;
+            padding: 5px;
+            text-align: right;
+        }
+        
+        .quizQuestions input {
+            font-size: 1em;
+            margin-left: 15px;
+            width: 350px;
+        }
+        
+        input[type="button"],
+        input[type="submit"] {
+            height: 50px;
+            font-size: 2em;
+            text-align: center;
+            margin: auto;
+            display: inline-block
+        }
+    </style>
+</head>
+
+<body>
+    <form name="myForm">
+        <div class="output"></div>
+        <input type="submit" value="Save Quiz">
+        <input type="button" value="Add Question"> </form>
+    <script>
+        const output = document.querySelector('.output');
+        const myForm = document.forms.namedItem('myForm');
+        const btn = document.querySelector('input[type=button]');
+        const url = 'https://script.google.com/macros/s/AKfycbwRO5wto3TxG3bXpAns9Os6GkWu0vcqUVQ45JOvF7TgQVFwaFpa/exec';
+        window.onload = function (e) {
+            addQuestion();
+        }
+        myForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            createQuiz();
+        })
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            addQuestion();
+        })
+
+        function addQuestion() {
+            let div = createElement('div');
+            div.className = "quizQuestions";
+            div.appendChild(createInput('question'));
+            div.appendChild(createInput('correct'));
+            for (let x = 0; x < 4; x++) {
+                div.appendChild(createInput('wrong ' + (x + 1)));
+            }
+            output.appendChild(div);
+        }
+
+        function createInput(el) {
+            let input = createElement('input');
+            let span = createElement('span');
+            input.type = "text";
+            input.value = "";
+            input.name = el + "[]";
+            span.innerHTML = "<br>" + el + ":";
+            span.appendChild(input);
+            return span;
+        }
+
+        function createElement(el) {
+            return document.createElement(el);
+        }
+
+        function createQuiz() {
+            let quizArray = [];
+            let tempQ = document.querySelectorAll('.quizQuestions');
+            for (let q of tempQ) {
+                console.log(q);
+                let tQuestion = [];
+                let tempInputs = q.getElementsByTagName('input');
+                for (let inp of tempInputs) {
+                    console.log(inp.value);
+                    tQuestion.push(inp.value);
+                }
+                quizArray.push(tQuestion);
+            }
+            console.log(quizArray);
+            let formData = new FormData();
+            formData.append('data', JSON.stringify(quizArray));
+            fetch(url, {
+                method: "POST"
+                , body: formData
+            }).then(function (response) {
+                return response.json()
+            }).then(function (data) {
+                console.log(data);
+            })
+        }
+    </script>
+</body>
+
+</html>

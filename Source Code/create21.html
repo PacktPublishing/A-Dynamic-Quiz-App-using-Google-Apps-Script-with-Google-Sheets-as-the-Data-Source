@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title> Create Quiz </title>
+</head>
+
+	<body>
+<form name="myForm">
+    <div class="output"></div>
+    <input type="button" value="Create Quiz"> 
+
+</form>
+<script>
+const output= document.querySelector('.output');
+const myForm = document.forms.namedItem('myForm');
+const btn = document.querySelector('input[type=button]');
+const url = 'https://script.google.com/macros/s/AKfycbwRO5wto3TxG3bXpAns9Os6GkWu0vcqUVQ45JOvF7TgQVFwaFpa/exec';
+btn.addEventListener('click',function(e){
+    e.preventDefault();
+    createQuiz();
+})
+
+
+function createQuiz(){
+    fetch(url,{
+        method : "POST"
+    }).then(function(response){
+        return response.json()
+    }).then(function(data){
+        console.log(data);
+    })
+    
+}
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

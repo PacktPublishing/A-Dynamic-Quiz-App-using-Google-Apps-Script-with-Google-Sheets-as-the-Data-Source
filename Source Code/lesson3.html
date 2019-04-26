@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Quiz</title>
+</head>
+<body>
+    <script>
+        const url = "https://spreadsheets.google.com/feeds/list/1X2raQeBqfGLZ8DLyJAsPkQI814zkETyS--jIXYfn-l0/1/public/values?alt=json";
+        document.addEventListener('DOMContentLoaded', init);
+        function init() {
+            fetch(url).then(function (res) {
+                return res.json()
+            }).then(function (data) {
+                console.log(data);
+            })
+        }
+    </script>
+</body>
+</html>
